@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>{{ product.name }}</h4>
+    <div>
+        {% if user.is_admin %}
+        <a href="{% url 'product_edit' product.pk %}" class="btn btn-outline-dark btn-sm">Edit Product</a>
+        {% endif %}
+        <a href="{% url 'product_list' %}" class="btn btn-outline-secondary btn-sm">Back to Products</a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-dark">
+            <div class="card-body">
+                <h6>Current Stock</h6>
+                <h2>{{ product.current_stock }} <small class="fs-6">{{ product.unit }}</small></h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h6>Total Stock In</h6>
+                <h2>{{ total_in }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h6>Total Stock Out</h6>
+                <h2>{{ total_out }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card {% if product.is_low_stock %}text-white bg-warning{% else %}text-white bg-secondary{% endif %}">
+            <div class="card-body">
+                <h6>Min Threshold</h6>
+                <h2>{{ product.minimum_threshold }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">Product Info</div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tr><td class="text-muted">Category</td><td>{{ product.category.name|default:"—" }}</td></tr>
+                    <tr><td class="text-muted">Unit</td><td>{{ product.unit }}</td></tr>
+                    <tr><td class="text-muted">Status</td>
+                        <td>
+                            {% if product.is_low_stock %}
+                            <span class="badge bg-warning text-dark">Low Stock</span>
+                            {% else %}
+                            <span class="badge bg-success">OK</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr><td class="text-muted">Added By</td><td>{{ product.created_by.username|default:"—" }}</td></tr>
+                    <tr><td class="text-muted">Added On</td><td>{{ product.created_at|date:"d M Y" }}</td></tr>
+                    <tr><td class="text-muted">Last Updated</td><td>{{ product.updated_at|date:"d M Y" }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">Quick Actions</div>
+            <div class="card-body d-flex gap-2">
+                <a href="{% url 'stock_in' %}?product={{ product.pk }}" class="btn btn-success">+ Stock In</a>
+                <a href="{% url 'stock_out' %}?product={{ product.pk }}" class="btn btn-danger">- Stock Out</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <i class="bi bi-clock-history"></i> Transaction History
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Performed By</th>
+                    <th>Supplier / Reason</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td>{{ t.date|date:"d M Y H:i" }}</td>
+                    <td>
+                        {% if t.transaction_type == 'IN' %}
+                        <span class="badge bg-success">Stock In</span>
+                        {% else %}
+                        <span class="badge bg-danger">Stock Out</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ t.quantity }}</td>
+                    <td>{{ t.performed_by.username|default:"—" }}</td>
+                    <td>
+                        {% if t.supplier %}{{ t.supplier.name }}
+                        {% elif t.out_reason %}{{ t.get_out_reason_display }}
+                        {% else %}—{% endif %}
+                    </td>
+                    <td>{{ t.notes|default:"—" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted py-3">No transactions yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="py-5 text-center" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); border-radius: 16px; color: white; margin-bottom: 2rem; padding: 4rem 2rem !important;">
+    <i class="bi bi-box-seam" style="font-size: 5rem; color: #e94560;"></i>
+    <h1 class="display-4 fw-bold mt-3">StockSmart</h1>
+    <p class="lead col-lg-6 mx-auto mt-3" style="color: #a8b2d8;">
+        A smart, simple inventory management system for your business.
+        Track products, manage stock levels, and stay on top of your supply chain.
+    </p>
+    <div class="d-flex gap-3 justify-content-center mt-4">
+        <a href="{% url 'login' %}" class="btn btn-lg px-5 fw-bold" style="background-color: #e94560; color: white; border: none;">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+        </a>
+        <a href="{% url 'register' %}" class="btn btn-lg px-5 fw-bold" style="background: transparent; color: white; border: 2px solid white;">
+            <i class="bi bi-person-plus"></i> Register
+        </a>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="row g-3 mb-5 text-center">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm py-3">
+            <h2 class="fw-bold text-dark">100%</h2>
+            <p class="text-muted mb-0">Web Based</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm py-3">
+            <h2 class="fw-bold text-dark">4</h2>
+            <p class="text-muted mb-0">Core Modules</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm py-3">
+            <h2 class="fw-bold text-dark">Real-Time</h2>
+            <p class="text-muted mb-0">Stock Tracking</p>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<h2 class="text-center fw-bold mb-4">Everything You Need</h2>
+<div class="row g-4 mb-5">
+    <div class="col-md-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+            <div class="mb-3">
+                <span style="background-color: #e8f4fd; padding: 16px; border-radius: 50%; display: inline-block;">
+                    <i class="bi bi-box-seam fs-3 text-primary"></i>
+                </span>
+            </div>
+            <h5 class="fw-bold">Product Management</h5>
+            <p class="text-muted small">Add, edit and organize your products and categories with ease.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+            <div class="mb-3">
+                <span style="background-color: #eafaf1; padding: 16px; border-radius: 50%; display: inline-block;">
+                    <i class="bi bi-arrow-left-right fs-3 text-success"></i>
+                </span>
+            </div>
+            <h5 class="fw-bold">Stock Transactions</h5>
+            <p class="text-muted small">Record stock in and stock out with full transaction history log.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+            <div class="mb-3">
+                <span style="background-color: #fef9e7; padding: 16px; border-radius: 50%; display: inline-block;">
+                    <i class="bi bi-exclamation-triangle fs-3 text-warning"></i>
+                </span>
+            </div>
+            <h5 class="fw-bold">Low Stock Alerts</h5>
+            <p class="text-muted small">Get instant alerts when products fall below minimum thresholds.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+            <div class="mb-3">
+                <span style="background-color: #eafaf1; padding: 16px; border-radius: 50%; display: inline-block;">
+                    <i class="bi bi-bar-chart fs-3 text-success"></i>
+                </span>
+            </div>
+            <h5 class="fw-bold">Reports & Analytics</h5>
+            <p class="text-muted small">Visual charts and reports to understand your inventory at a glance.</p>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="p-5 mb-5 rounded-3" style="background-color: #f8f9fa;">
+    <h2 class="text-center fw-bold mb-5">How It Works</h2>
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="mb-3">
+                <span class="badge rounded-circle p-3 fs-5" style="background-color: #1a1a2e; width: 50px; height: 50px;">1</span>
+            </div>
+            <h5 class="fw-bold">Register</h5>
+            <p class="text-muted small">Create your account as Admin or request Staff access.</p>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <span class="badge rounded-circle p-3 fs-5" style="background-color: #1a1a2e; width: 50px; height: 50px;">2</span>
+            </div>
+            <h5 class="fw-bold">Set Up Products</h5>
+            <p class="text-muted small">Add your products and categories to the system.</p>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <span class="badge rounded-circle p-3 fs-5" style="background-color: #1a1a2e; width: 50px; height: 50px;">3</span>
+            </div>
+            <h5 class="fw-bold">Track & Manage</h5>
+            <p class="text-muted small">Record transactions and monitor stock levels in real time.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Role Cards -->
+<h2 class="text-center fw-bold mb-4">Who Is It For?</h2>
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-4" style="border-left: 4px solid #1a1a2e !important;">
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-person-gear fs-2 me-3 text-dark"></i>
+                <h5 class="fw-bold mb-0">Admin</h5>
+            </div>
+            <ul class="text-muted small mb-0">
+                <li>Manage products and categories</li>
+                <li>Approve or reject staff registrations</li>
+                <li>View full reports and analytics</li>
+                <li>Monitor low stock alerts</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-4" style="border-left: 4px solid #e94560 !important;">
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-person fs-2 me-3" style="color: #e94560;"></i>
+                <h5 class="fw-bold mb-0">Staff</h5>
+            </div>
+            <ul class="text-muted small mb-0">
+                <li>Record stock in and stock out</li>
+                <li>View product stock levels</li>
+                <li>Browse transaction history</li>
+                <li>View low stock alerts</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="text-center py-5 mb-4 rounded-3" style="background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); color: white;">
+    <h2 class="fw-bold">Ready to Get Started?</h2>
+    <p style="color: #a8b2d8;">Join StockSmart and take control of your inventory today.</p>
+    <a href="{% url 'register' %}" class="btn btn-lg px-5 mt-2 fw-bold" style="background-color: #e94560; color: white; border: none;">
+        Get Started Free
+    </a>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<footer style="background-color: #1a1a2e; color: #a8b2d8;" class="mt-5 py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h5 class="text-white fw-bold mb-3">
+                    <i class="bi bi-box-seam"></i> StockSmart
+                </h5>
+                <p class="small">A smart web-based inventory management system designed to help businesses track stock levels efficiently.</p>
+            </div>
+            <div class="col-md-4">
+                <h6 class="text-white fw-bold mb-3">Quick Links</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-1"><a href="{% url 'home' %}" class="text-decoration-none" style="color: #a8b2d8;">Home</a></li>
+                    <li class="mb-1"><a href="{% url 'login' %}" class="text-decoration-none" style="color: #a8b2d8;">Login</a></li>
+                    <li class="mb-1"><a href="{% url 'register' %}" class="text-decoration-none" style="color: #a8b2d8;">Register</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="text-white fw-bold mb-3">Features</h6>
+                <ul class="list-unstyled small">
+                    <li class="mb-1" style="color: #a8b2d8;"><i class="bi bi-check2"></i> Product Management</li>
+                    <li class="mb-1" style="color: #a8b2d8;"><i class="bi bi-check2"></i> Stock Transactions</li>
+                    <li class="mb-1" style="color: #a8b2d8;"><i class="bi bi-check2"></i> Low Stock Alerts</li>
+                    <li class="mb-1" style="color: #a8b2d8;"><i class="bi bi-check2"></i> Reports & Analytics</li>
+                </ul>
+            </div>
+        </div>
+        <hr style="border-color: #2d2d4e;">
+        <div class="text-center small" style="color: #6c757d;">
+            © 2026 StockSmart. Built for KIET University — Software Quality Engineering Project.
+        </div>
+    </div>
+</footer>
+{% endblock %}

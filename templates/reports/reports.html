@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h4 class="mb-4">Reports & Analytics</h4>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-dark">
+            <div class="card-body">
+                <h6>Total Products</h6>
+                <h2>{{ total_products }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h6>Total Stock In</h6>
+                <h2>{{ total_stock_in }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h6>Total Stock Out</h6>
+                <h2>{{ total_stock_out }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h6>Low Stock Items</h6>
+                <h2>{{ low_stock_count }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-3 mb-4">
+    <!-- Bar Chart - Top Products -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-bar-chart"></i> Top Products by Current Stock
+            </div>
+            <div class="card-body">
+                <canvas id="stockBarChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie Chart - Stock In vs Out -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-pie-chart"></i> Stock In vs Stock Out
+            </div>
+            <div class="card-body">
+                <canvas id="stockPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Line Chart - Last 7 Days -->
+<div class="row g-3 mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-graph-up"></i> Transactions - Last 7 Days
+            </div>
+            <div class="card-body">
+                <canvas id="transactionLineChart" height="80"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Low Stock Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <i class="bi bi-exclamation-triangle"></i> Low Stock Products
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Current Stock</th>
+                            <th>Minimum Threshold</th>
+                            <th>Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in low_stock_products %}
+                        <tr class="table-warning">
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.category.name|default:"—" }}</td>
+                            <td>{{ product.current_stock }}</td>
+                            <td>{{ product.minimum_threshold }}</td>
+                            <td>{{ product.unit }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">
+                                No low stock items.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Bar Chart
+    new Chart(document.getElementById('stockBarChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ top_product_names|safe }},
+            datasets: [{
+                label: 'Current Stock',
+                data: {{ top_product_stocks|safe }},
+                backgroundColor: 'rgba(33, 37, 41, 0.8)',
+                borderColor: 'rgba(33, 37, 41, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // Pie Chart
+    new Chart(document.getElementById('stockPieChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Stock In', 'Stock Out'],
+            datasets: [{
+                data: [{{ total_stock_in }}, {{ total_stock_out }}],
+                backgroundColor: ['#198754', '#dc3545'],
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    // Line Chart
+    new Chart(document.getElementById('transactionLineChart'), {
+        type: 'line',
+        data: {
+            labels: {{ last_7_days|safe }},
+            datasets: [
+                {
+                    label: 'Stock In',
+                    data: {{ stock_in_data|safe }},
+                    borderColor: '#198754',
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Stock Out',
+                    data: {{ stock_out_data|safe }},
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Transactions</h4>
+    <div>
+        <a href="{% url 'stock_in' %}" class="btn btn-success btn-sm me-2">+ Stock In</a>
+        <a href="{% url 'stock_out' %}" class="btn btn-danger btn-sm">- Stock Out</a>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <form method="GET" class="row g-2">
+            <div class="col-md-4">
+                <select name="type" class="form-select form-select-sm">
+                    <option value="">All Types</option>
+                    <option value="IN" {% if selected_type == 'IN' %}selected{% endif %}>Stock In</option>
+                    <option value="OUT" {% if selected_type == 'OUT' %}selected{% endif %}>Stock Out</option>
+                </select>
+            </div>
+            <div class="col-md-5">
+                <select name="product" class="form-select form-select-sm">
+                    <option value="">All Products</option>
+                    {% for p in products %}
+                    <option value="{{ p.id }}" {% if selected_product == p.id|stringformat:"s" %}selected{% endif %}>{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-dark btn-sm w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Performed By</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td>{{ t.date|date:"d M Y H:i" }}</td>
+                    <td>{{ t.product.name }}</td>
+                    <td>
+                        {% if t.transaction_type == 'IN' %}
+                        <span class="badge bg-success">Stock In</span>
+                        {% else %}
+                        <span class="badge bg-danger">Stock Out</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ t.quantity }}</td>
+                    <td>{{ t.performed_by.username|default:"—" }}</td>
+                    <td>
+                        {% if t.supplier %}Supplier: {{ t.supplier }}{% endif %}
+                        {% if t.reason %}Reason: {{ t.reason }}{% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted py-3">No transactions found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h3>Welcome, {{ user.username }}! 
+            <span class="badge bg-dark">{{ user.role|capfirst }}</span>
+        </h3>
+        <hr>
+    </div>
+</div>
+
+<div class="row g-3 mt-2">
+    <div class="col-md-3">
+        <div class="card text-white bg-dark">
+            <div class="card-body">
+                <h6 class="card-title">Total Products</h6>
+                <h2>{{ total_products }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h6 class="card-title">Low Stock Alerts</h6>
+                <h2>{{ low_stock_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h6 class="card-title">Total Transactions</h6>
+                <h2>{{ total_transactions }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h6 class="card-title">Total Users</h6>
+                <h2>{{ total_users }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if user.is_admin and pending_users > 0 %}
+<div class="alert alert-warning mt-3">
+    <i class="bi bi-person-exclamation"></i>
+    <strong>{{ pending_users }}</strong> user(s) pending approval.
+    <a href="{% url 'user_list' %}" class="alert-link">Review now</a>
+</div>
+{% endif %}
+
+<div class="row mt-4"> <!-- low stock and recent transactions -->
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-exclamation-triangle"></i> Low Stock Items
+            </div>
+            <div class="card-body">
+                {% if low_stock_products %}
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Current Stock</th>
+                            <th>Minimum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in low_stock_products %}
+                        <tr class="table-warning">
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.current_stock }}</td>
+                            <td>{{ product.minimum_threshold }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted">No low stock items.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <i class="bi bi-clock-history"></i> Recent Transactions
+            </div>
+            <div class="card-body">
+                {% if recent_transactions %}
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Type</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in recent_transactions %}
+                        <tr>
+                            <td>{{ t.product.name }}</td>
+                            <td>
+                                {% if t.transaction_type == 'IN' %}
+                                <span class="badge bg-success">IN</span>
+                                {% else %}
+                                <span class="badge bg-danger">OUT</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ t.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted">No transactions yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
