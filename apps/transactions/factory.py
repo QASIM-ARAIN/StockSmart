@@ -2,8 +2,11 @@ from apps.transactions.models import Transaction
 from apps.products.models import Product
 
 class TransactionFactory:
+
     @staticmethod
     def create_stock_in(product, quantity, user, supplier=None, notes=None):
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than zero")
         transaction = Transaction.objects.create(
             product=product,
             transaction_type='IN',
@@ -18,6 +21,8 @@ class TransactionFactory:
 
     @staticmethod
     def create_stock_out(product, quantity, user, out_reason=None, notes=None):
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than zero")
         if quantity > product.current_stock:
             raise ValueError("Insufficient stock available")
         transaction = Transaction.objects.create(
